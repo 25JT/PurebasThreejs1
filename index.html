@@ -1,0 +1,46 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cubo</title>
+    </head>
+    <body>
+        
+
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    // Crear la escena
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x007074);
+    // Crear la cámara
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight , 0.1, 1000);
+    // Crear el renderizador
+    var renderer = new THREE.WebGLRenderer();
+    // Establecer el tamaño del renderizador
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe : true});
+    var cube = new THREE.Mesh(geometry,material);
+
+
+    scene.add(cube);
+    camera.position.z = 5;
+    // Crear un cubo
+    renderer.render(scene, camera);
+//animacion
+    var animate = function (){
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        renderer.render(scene, camera);
+    }
+
+    animate();
+        
+    
+</script>
+    </body>
+    </html>
