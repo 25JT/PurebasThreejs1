@@ -35,25 +35,49 @@
         document.body.appendChild(renderer.domElement);
 
         //add geometry
-        var geometry = new THREE.BoxGeometry();
+        var geometry = new THREE.BoxGeometry(2, 2, 2, 5, 5,5);
         var material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-        var cube = new THREE.Mesh(geometry, material);
 
+        var cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
 
-        camera.position.z = 5;
+        var circle = new THREE.Mesh(new THREE.CircleGeometry(1,40,0), material);
+        circle.position.x = 3;
+        scene.add(circle);
+
+        var sphere = new THREE.Mesh(new THREE.SphereGeometry(), material);
+        sphere.position.x = -3;
+        scene.add(sphere);
+
+        var cone = new THREE.Mesh(new THREE.ConeGeometry(), material);
+        cone.position.y = 3;
+        scene.add(cone);
+
+        camera.position.z = 10;
 
         var controls = new OrbitControls(camera, renderer.domElement);
+
+        window.addEventListener('resize', redimensionar);
+        function redimensionar() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+        }
 
         //animation
         var animate = function () {
             requestAnimationFrame(animate);
 
-
-
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-
+            scene.traverse(
+                function (object) {
+                    if (object.isMesh ) {
+                        //object.rotation.x += 0.001;
+                        object.rotation.y += 0.01;
+                    }
+                }
+            )
+                 
             renderer.render(scene, camera);
 
         }
