@@ -1,62 +1,66 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cubo</title>
-    </head>
-    <body>
-        
+<!DOCTYPE html>
+<html lang="es">
 
-<script  src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-    // Crear la escena
-    var scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-    // Crear la cámara
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight , 0.1, 2000);
-    var camera2 = new THREE.OrthographicCamera(5,-5,5,-5,3,10);
-    var helper = new THREE.CameraHelper( camera2 );
-    scene.add( helper );
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js con Import Map</title>
+    <script type="importmap">
+      {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.174.0/build/three.module.min.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.174.0/examples/jsm/"
+        }
+      }
+    </script>
+</head>
 
-    // Crear el renderizador
-    var renderer = new THREE.WebGLRenderer();
-    // Establecer el tamaño del renderizador
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+<body>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    var geometry = new THREE.BoxGeometry(1, 1, 1);
-    var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
-    var cube = new THREE.Mesh(geometry,material);
-    cube.position.z = -5;
+        var scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x2a3b4c);
 
-    scene.add(cube);
-  // camera.position.z = 2;
-    // Crear un cubo
-    renderer.render(scene, camera);
-//animacion
+        //add camera
+        var camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight
+        );
 
-    var  i = 0;
-    var animate = function (){
-        requestAnimationFrame(animate);
+        //renderer
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-        camera.lookAt(cube.position);
+        //add geometry
+        var geometry = new THREE.BoxGeometry();
+        var material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+        var cube = new THREE.Mesh(geometry, material);
 
-        camera.position.x = Math.cos(i)*30;
-        camera.position.z = Math.sin(i)*30;
-        i+=0.01;
+        scene.add(cube);
 
-       // cube.rotation.x += 0.01;
-      //  cube.rotation.y += 0.01;
-        renderer.render(scene, camera);
-    }
+        camera.position.z = 5;
 
-    animate();
-        
-    
-</script>
+        var controls = new OrbitControls(camera, renderer.domElement);
 
-<script src="OrbitControls.js"></script>
-<script src="OrbitControls.js"></script>
-    </body>
-    </html>
+        //animation
+        var animate = function () {
+            requestAnimationFrame(animate);
+
+
+
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+
+        }
+
+        animate();
+    </script>
+
+</body>
+
+</html>
